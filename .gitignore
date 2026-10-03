@@ -29,3 +29,7 @@ Thumbs.db
 .idea/
 01_eda_codigo.txt
 *_codigo.txt
+
+# Scripts auxiliares (não versionados)
+extrair_codigo.py
+*_codigo.txt
