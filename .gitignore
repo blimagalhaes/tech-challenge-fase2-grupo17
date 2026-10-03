@@ -33,3 +33,6 @@ Thumbs.db
 # Scripts auxiliares (não versionados)
 extrair_codigo.py
 *_codigo.txt
+
+# Pasta de scripts auxiliares (não versionada)
+scripts_auxiliares/
