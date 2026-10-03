@@ -1,0 +1,66 @@
+name: Validar entrega
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  estrutura:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Pastas obrigatórias
+        run: |
+          faltando=0
+          for d in data notebooks src results docs; do
+            if [ ! -d "$d" ]; then echo "::error::pasta ausente: $d/"; faltando=1; fi
+          done
+          for f in README.md requirements.txt; do
+            if [ ! -f "$f" ]; then echo "::error::arquivo ausente: $f"; faltando=1; fi
+          done
+          exit $faltando
+
+      - name: README preenchido
+        run: |
+          if grep -q "PREENCHER" README.md; then
+            echo "::error::README.md ainda contém marcadores <!-- PREENCHER -->"
+            exit 1
+          fi
+
+      - name: Datasets não versionados
+        run: |
+          encontrados=$(git ls-files 'data/**' | grep -Ev '(\.gitkeep|README\.md)$' || true)
+          if [ -n "$encontrados" ]; then
+            echo "::error::há dados versionados em data/:"
+            echo "$encontrados"
+            exit 1
+          fi
+
+      - name: Notebooks executáveis de cima para baixo
+        run: |
+          pip install --quiet nbformat
+          python - <<'PY'
+          import pathlib, sys
+          import nbformat
+          falhou = False
+          for nb_path in sorted(pathlib.Path("notebooks").glob("*.ipynb")):
+              nb = nbformat.read(nb_path, as_version=4)
+              nums = [c.execution_count for c in nb.cells
+                      if c.cell_type == "code" and c.execution_count is not None]
+              if nums and nums != sorted(nums):
+                  print(f"::warning file={nb_path}::células fora de ordem de execução")
+                  falhou = True
+          sys.exit(0)
+          PY
+
+      - name: PDF de submissão válido
+        run: |
+          pip install --quiet reportlab
+          python submissao/gerar_submissao.py

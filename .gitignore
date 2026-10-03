@@ -1,0 +1,29 @@
+# Dados — nunca versione datasets
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
+!data/**/README.md
+
+# Modelos serializados — são regeneráveis rodando os notebooks
+*.pkl
+*.joblib
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Ambiente e segredos
+.env
+.env.*
+
+# SO / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

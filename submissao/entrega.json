@@ -1,0 +1,13 @@
+{
+  "turma": "12DTAT",
+  "grupo": "Grupo 00",
+  "integrantes": [
+    { "nome": "Nome Completo do Integrante", "rm": "RM000000" },
+    { "nome": "Nome Completo do Integrante", "rm": "RM000000" }
+  ],
+  "links": {
+    "repositorio": "https://github.com/usuario/nome-do-repositorio",
+    "video": "https://www.youtube.com/watch?v=xxxxxxxxxxx",
+    "apresentacao": "https://github.com/usuario/nome-do-repositorio/blob/main/docs/apresentacao_executiva.pdf"
+  }
+}
