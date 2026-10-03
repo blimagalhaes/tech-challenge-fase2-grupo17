@@ -20,8 +20,24 @@ MODELS = RESULTS / "models"
 METRICS = RESULTS / "metrics"
 
 # --- Dataset -----------------------------------------------------------------
-RAW_FILE = DATA_RAW / "dataset.csv"   # PREENCHER: nome real do arquivo
-TARGET = "target"                      # PREENCHER: nome da variável alvo
+# O dataset do Tech Challenge tem DOIS arquivos CSV, não um.
+RAW_FILE_APP = DATA_RAW / "application_record.csv"
+RAW_FILE_CRED = DATA_RAW / "credit_record.csv"
+
+# Nome do arquivo tratado, salvo em data/processed/ pelo notebook 02.
+PROCESSED_FILE = "dataset_tratado.parquet"
+
+# --- Variável alvo -----------------------------------------------------------
+# TARGET = 1 se o cliente atingiu atraso >= 60 dias (status_num >= 2) em algum mês.
+# Justificativa: 60 dias é o ponto em que a inadimplência se torna grave e
+# persistente, sem esvaziar a classe positiva (o critério de 90 dias produziria
+# poucos positivos; o de 30 dias incluiria atrasos leves que o mercado não
+# considera inadimplência real).
+TARGET = "mau_pagador"
+
+# Limiar em dias de atraso para classificar como mau pagador.
+# Mapeamento de STATUS: 0=1-29, 1=30-59, 2=60-89, 3=90-119, 4=120-149, 5=150+.
+LIMIAR_DIAS = 60
 
 # --- Split -------------------------------------------------------------------
 TEST_SIZE = 0.2
