@@ -177,3 +177,69 @@ def plot_capture_curve(y_true, y_proba, nome_modelo: str, ax=None):
         plt.savefig(FIGURES / f"captura_{nome_modelo}.png", dpi=150, bbox_inches="tight")
         plt.close()
     return ax
+
+# ----------------------------------------------------- validação cruzada --
+from sklearn.model_selection import StratifiedGroupKFold
+
+
+def cross_validate_model(
+    pipeline,
+    X: pd.DataFrame,
+    y: pd.Series,
+    groups: pd.Series,
+    cv_folds: int = 5,
+    random_state: int = 42,
+) -> pd.DataFrame:
+    """Roda StratifiedGroupKFold e retorna métricas por fold.
+
+    Parâmetros
+    ----------
+    pipeline : sklearn Pipeline
+        Modelo já encapsulado (com scaler, se aplicável).
+    X : pd.DataFrame
+        Features.
+    y : pd.Series
+        Target binário.
+    groups : pd.Series
+        Grupo de cada amostra (para evitar que gêmeos caiam em folds diferentes).
+    cv_folds : int
+        Número de folds.
+    random_state : int
+        Semente para reprodutibilidade.
+
+    Retorna
+    -------
+    pd.DataFrame
+        Uma linha por fold, com as colunas de `score()` + coluna "fold".
+    """
+    sgkf = StratifiedGroupKFold(
+        n_splits=cv_folds,
+        shuffle=True,
+        random_state=random_state,
+    )
+
+    metricas_por_fold = []
+
+    for fold, (idx_train, idx_val) in enumerate(sgkf.split(X, y, groups=groups)):
+        X_train, X_val = X.iloc[idx_train], X.iloc[idx_val]
+        y_train, y_val = y.iloc[idx_train], y.iloc[idx_val]
+
+        # Treina no fold de treino e prevê no fold de validação
+        pipeline.fit(X_train, y_train)
+        y_proba = pipeline.predict_proba(X_val)[:, 1]
+        y_pred = (y_proba >= 0.5).astype(int)
+
+        # Calcula métricas
+        m = score(y_val, y_pred, y_proba)
+        m["fold"] = fold
+        metricas_por_fold.append(m)
+
+    return pd.DataFrame(metricas_por_fold)
+
+
+def summarize_folds(df_metricas: pd.DataFrame) -> pd.Series:
+    """Agrega as métricas por fold em média + desvio-padrão.
+
+    Útil para comparar modelos na tabela final.
+    """
+    return df_metricas.drop(columns="fold").agg(["mean", "std"]).T.round(4)

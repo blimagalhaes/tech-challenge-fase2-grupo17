@@ -11,6 +11,7 @@ cruzada.
 """
 
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -20,13 +21,17 @@ from src.config import RANDOM_STATE
 
 
 def get_logistic_regression() -> Pipeline:
-    """Regressão Logística com padronização.
+    """Regressão Logística com imputação e padronização.
 
-    O StandardScaler é necessário porque a Regressão Logística é sensível à
-    escala das variáveis de entrada. O class_weight='balanced' compensa o
-    desbalanceamento sem alterar os dados de treino.
+    O SimpleImputer(strategy="median") é necessário porque a coluna
+    cad_anos_emprego tem NaN para clientes desempregados.
+    O StandardScaler é necessário porque a Regressão Logística é sensível
+    à escala das variáveis de entrada.
+    O class_weight="balanced" compensa o desbalanceamento sem alterar os
+    dados de treino.
     """
     return Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
         ("scaler", StandardScaler()),
         ("clf", LogisticRegression(
             max_iter=3000,
@@ -38,13 +43,16 @@ def get_logistic_regression() -> Pipeline:
 
 
 def get_random_forest() -> Pipeline:
-    """Random Forest com class_weight='balanced_subsample'.
+    """Random Forest com imputação.
 
-    Não precisa de escala (modelo baseado em árvores). O
-    'balanced_subsample' repondera cada árvore pela frequência das classes
-    na subamostra bootstrap, o que funciona bem com desbalanceamento.
+    O SimpleImputer é necessário pela mesma razão da Regressão Logística:
+    a coluna cad_anos_emprego tem NaN. Diferente da Regressão Logística,
+    o RandomForest não precisa de StandardScaler (é invariante à escala).
+    O class_weight="balanced_subsample" repondera cada árvore pela
+    frequência das classes na subamostra bootstrap.
     """
     return Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
         ("clf", RandomForestClassifier(
             n_estimators=400,
             min_samples_leaf=30,
