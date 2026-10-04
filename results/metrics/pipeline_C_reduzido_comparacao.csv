@@ -1,0 +1,2 @@
+,accuracy,precision,recall,f1,roc_auc,average_precision,ks,fold
+C' | random_forest,0.9519,0.1218,0.3708,0.1807,0.7836,0.0992,0.4815,2.0
