@@ -1,0 +1,7 @@
+Top k%,Clientes sinalizados,Maus pagadores capturados,Captura,Precisão na fatia,Lift vs aleatório
+1%,184,27,10.3%,14.67%,10.2x
+2%,367,58,22.1%,15.80%,11.0x
+5%,917,101,38.4%,11.01%,7.7x
+10%,1834,131,49.8%,7.14%,5.0x
+20%,3668,156,59.3%,4.25%,3.0x
+30%,5502,189,71.9%,3.44%,2.4x

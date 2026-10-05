@@ -1,0 +1,8 @@
+Pergunta,Resposta,Evidência
+O cadastro isolado prevê mau pagador?,Pouco. ROC-AUC fica próximo do aleatório.,"ROC-AUC ~0,58"
+O comportamento de pagamento prevê mau pagador?,"Sim, com desempenho substancialmente superior ao cadastro.","ROC-AUC ~0,76"
+O cadastro agrega informação ao comportamento?,Cinco features macro agregam. As demais não.,"+0,02 em ROC-AUC, +0,10 em KS"
+Qual o modelo final?,Comportamento (15 features) + 5 features cadastrais macro. Random Forest.,"ROC-AUC 0,78, KS 0,48"
+Qual a captura de inadimplência?,"Sinalizando 5% da carteira, 38% dos maus pagadores são capturados.","Acerto 7,7x acima da taxa base"
+A partir de que premissas o modelo compensa?,"Razão perda/margem ≥ 8,1x, dentro da faixa típica de crédito.",Cenário conservador (5% de recusa)
+Quais as limitações principais?,Volume baixo de positivos; valor do crédito estimado por hipótese; não cobre clientes sem histórico.,263 maus pagadores na base

@@ -1,0 +1,4 @@
+Cenário,Teto,Maus pagadores na carteira anual,Maus capturados pelo modelo,Maus que ainda escapam,Prejuízo SEM modelo,Prejuízo COM modelo,Economia estimada,% de economia
+Conservador,5%,1434,550,883,R$ 10.0 M,R$ 6.2 M,R$ 3.9 M,38.4%
+Equilibrado,10%,1434,714,719,R$ 10.0 M,R$ 5.0 M,R$ 5.0 M,49.8%
+Agressivo,15%,1434,796,637,R$ 10.0 M,R$ 4.5 M,R$ 5.6 M,55.5%
