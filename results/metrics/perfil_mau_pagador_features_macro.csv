@@ -1,0 +1,6 @@
+,Bom (média),Mau (média),Diferença,Direção
+cad_idade,44.18,44.11,-0.06,Menor risco
+cad_anos_emprego,7.73,6.19,-1.54,Menor risco
+cad_renda_per_capita,100546.0,104979.75,4433.76,Maior risco
+log_renda,12.04,11.99,-0.05,Menor risco
+AMT_INCOME_TOTAL,190001.54,180284.03,-9717.51,Menor risco
